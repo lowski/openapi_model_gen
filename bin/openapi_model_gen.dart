@@ -62,6 +62,7 @@ void main(List<String> argv) async {
 Schema createSchemaFromRef(
   Ref ref, {
   GeneratorOptions? options,
+  bool allowEmptyTitle = false,
 }) {
   options ??= GeneratorOptions();
 
@@ -73,12 +74,12 @@ Schema createSchemaFromRef(
     map = resolved.loadMap();
   }
 
-  if (map['title'] == null) {
+  if (map['title'] == null && !allowEmptyTitle) {
     throw Exception('Schema does not have a title: ${ref.uri}');
   }
 
   final schema = Schema.withRef(
-    name: map['title']!.toString().toUpperCamelCase(),
+    name: map['title']?.toString().toUpperCamelCase() ?? '',
     refR: resolved,
   );
 
@@ -113,6 +114,7 @@ Schema createSchemaFromRef(
       // Create a new subschema if the property is an object
       final subschema = createSchemaFromRef(
         resolved.appendFragment('/properties/${entry.key}'),
+        allowEmptyTitle: true,
       );
 
       final additionalPropertiesPath = resolved
@@ -150,6 +152,7 @@ Schema createSchemaFromRef(
       } else {
         final subschema = createSchemaFromRef(
           schema.refR.appendFragment('/properties/${entry.key}/items'),
+          allowEmptyTitle: true,
         );
 
         if (subschema.name.isEmpty) {
