@@ -1,8 +1,14 @@
 import 'package:code_builder/code_builder.dart' as cb;
+import 'package:code_builder/code_builder.dart';
 import 'package:openapi_model_gen/src/generator_options.dart';
 
 import 'programming_cases_extension.dart';
 import 'property.dart';
+
+const _refJsonEnum =
+    Reference('JsonEnum()', 'package:json_annotation/json_annotation.dart');
+const _refJsonValue =
+    Reference('JsonValue', 'package:json_annotation/json_annotation.dart');
 
 class Enum {
   String name;
@@ -63,6 +69,7 @@ class Enum {
   void build(cb.LibraryBuilder parent, GeneratorOptions options) {
     final enm = cb.Enum((enumBuilder) {
       enumBuilder.name = name;
+      enumBuilder.annotations.add(_refJsonEnum);
 
       for (final entry in valueToName.entries) {
         final jsonValue = type == PropertyType.integer
@@ -74,7 +81,7 @@ class Enum {
               enumValueBuilder
                 ..name = entry.value
                 ..annotations.add(
-                  cb.refer('JsonValue').call([jsonValue]),
+                  _refJsonValue.call([jsonValue]),
                 );
             },
           ),
