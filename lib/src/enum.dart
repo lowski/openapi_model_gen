@@ -40,6 +40,7 @@ class Enum {
         name =
             prop.type == PropertyType.integer ? 'number$item' : item.toString();
       }
+      name = name.toCamelCase();
 
       e.add(item.toString(), name);
     }
