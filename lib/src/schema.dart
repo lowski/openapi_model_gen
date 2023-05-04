@@ -41,7 +41,7 @@ class Schema {
   String toString() => 'Schema(name: $name, ref: $ref)';
 
   String get fileName {
-    return snakeCaseName + '.dart';
+    return '$snakeCaseName.dart';
   }
 
   String get snakeCaseName => name.toSnakeCase();
@@ -103,7 +103,6 @@ class Schema {
           Method(
             (b) {
               b.name = 'toJson';
-              b.type = MethodType.getter;
               b.returns = refer('Map<String, dynamic>');
               b.lambda = true;
               b.body = Code('_\$${name}ToJson(this)');
