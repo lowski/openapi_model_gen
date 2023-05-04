@@ -47,6 +47,9 @@ class Enum {
             prop.type == PropertyType.integer ? 'number$item' : item.toString();
       }
       name = name.toCamelCase();
+      if (name.isEmpty) {
+        name = '\$empty';
+      }
 
       e.add(item.toString(), name);
     }
