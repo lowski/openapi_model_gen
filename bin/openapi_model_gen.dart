@@ -171,7 +171,8 @@ Schema createSchemaFromRef(
         } else {
           // If not, the subschema was probably a $ref and will be created on its
           // own, so we just need to import the file.
-          prop.importDirective = subschema.fileName;
+          prop.importDirective =
+              options.schemaMappings[subschema.name] ?? subschema.fileName;
         }
       }
     }
